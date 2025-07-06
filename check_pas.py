@@ -1,6 +1,5 @@
 import hashlib
 import requests
-from typing import Optional
 
 def pwned_api_check(password: str) -> int:
     if not password:

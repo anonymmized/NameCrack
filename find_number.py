@@ -245,7 +245,3 @@ def numbers_processing(text):
     if numbers:
         return numbers
     return []
-
-text = input("Enter text: ")
-number = numbers_processing(text)
-print(number)

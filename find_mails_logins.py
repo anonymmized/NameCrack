@@ -684,25 +684,13 @@ def mails_processing(text):
     elems = text.split()
     mails = []
     for elem in elems:
-        if '@' in elem:
-            ending = elem.split('@')[-1]
-            if ending in POPULAR_DOMAINS and re.match(EMAIL_PATTERN, elem):
-                mails.append(elem)
-    if mails:
-        return mails
-    return []
+        if re.match(EMAIL_PATTERN, elem):
+            mails.append(elem)
+    return mails
 
-def logins_processing(text):
+def logins_processing(word):
     logins = set()
-    for word in text.split():
-        for login in POPULAR_LOGINS:
-            if login in word:
-                logins.add(word)
-    if logins:
-        return logins
-    return []
-
-text = input("Enter text: ")
-mails = mails_processing(text)
-logins = logins_processing(text)
-print(mails, logins)
+    for login in POPULAR_LOGINS:
+        if login in word.lower() and '!@#$%^&*()_+={}|:;",.?/~' not in word:
+            logins.add(word)
+    return logins

@@ -19,12 +19,12 @@ def dates_processing(text):
     }
 
     DATE_REGEXES = [
-        r'\b(\d{1,2})\s+([a-zA-Zа-яА-Я]+)\s+(\d{4})\b',  # e.g., 1 jan 2008
-        r'\b([a-zA-Zа-яА-Я]+)\s+(\d{1,2})\s+(\d{4})\b',  # e.g., jan 1 2008
-        r'\b(\d{4})\s+([a-zA-Zа-яА-Я]+)\s+(\d{1,2})\b',  # e.g., 2008 jan 1
-        r'\b(\d{1,2})[\/\.\-](\d{1,2})[\/\.\-](\d{2,4})\b',  # e.g., 01.01.2008
-        r'\b(\d{4})-(\d{1,2})-(\d{1,2})\b',  # e.g., 2008-01-01
-        r'\b(\d{2})([a-zA-Zа-яА-Я]{3})(\d{2,4})\b'  # e.g., 07jan2008 or 08jun09
+        r'\b(\d{1,2})\s+([a-zA-Zа-яА-Я]+)\s+(\d{4})\b',  
+        r'\b([a-zA-Zа-яА-Я]+)\s+(\d{1,2})\s+(\d{4})\b',  
+        r'\b(\d{4})\s+([a-zA-Zа-яА-Я]+)\s+(\d{1,2})\b',  
+        r'\b(\d{1,2})[\/\.\-](\d{1,2})[\/\.\-](\d{2,4})\b',  
+        r'\b(\d{4})-(\d{1,2})-(\d{1,2})\b',  
+        r'\b(\d{2})([a-zA-Zа-яА-Я]{3})(\d{2,4})\b'
     ]
     found_dates = set()
 
@@ -34,7 +34,7 @@ def dates_processing(text):
             if len(match) == 3:
                 part1, part2, part3 = match
 
-                if regex == DATE_REGEXES[-1]:  # Для нового шаблона
+                if regex == DATE_REGEXES[-1]:
                     day, month, year = part1, part2, part3
                     if month.lower() in sum(MONTHS.values(), []):
                         month_abbr = next(key for key, value in MONTHS.items() if month.lower() in value)
@@ -42,7 +42,7 @@ def dates_processing(text):
                             year = "20" + year if int(year) <= current_year else "19" + year
                         found_dates.add(f"{day.zfill(2)}{month_abbr.upper()}{year}")
                         found_dates.add(f"{year}{month_abbr.upper()}{day.zfill(2)}")
-                        
+
                 elif any(part2.lower() in month_list for month_list in MONTHS.values()):
                     month_abbr = next(key for key, value in MONTHS.items() if part2.lower() in value)
                     day = part1.zfill(2) if part1.isdigit() else part3.zfill(2)
