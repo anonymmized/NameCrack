@@ -10,7 +10,7 @@ from do_leet_speak_reversed import leet_speak_word, reverse_word
 
 console = Console()
 main_color = '#8A2BE2'
-text = '07jan2008 +79778846727 08jun09 alexjoker@gmail.com +69372874234 insaneprogrammer@proton.ru admin123 insane_user Sam John Shara'
+text = '070882'
 
 def combined_passwords(text):
     words = text.split()
@@ -24,11 +24,16 @@ def combined_passwords(text):
     console.print("Перебор по данным:", style=f'bold italic {main_color}')
     for word in words:
         console.print(f"->   {word}", style=f'bold {main_color}')
-    print(f"Mails: {mails}")
-    print(f"Logins: {logins}")
-    print(f"Dates: {dates}")
-    print(f"Names: {names}")
-    print(f"Numbers: {numbers}")
+    if mails:
+        console.print(f"Mails: {mails}", style=f'bold {main_color}')
+    if logins:
+        console.print(f"Logins: {logins}", style=f'bold {main_color}')
+    if dates:
+        console.print(f"Dates: {dates}", style=f'bold {main_color}')
+    if names:
+        console.print(f"Names: {names}", style=f'bold {main_color}')
+    if numbers:
+        console.print(f"Numbers: {numbers}", style=f'bold {main_color}')
     combines = []
     combines += [date for date in dates]
     combines += [mail for mail in mails]
@@ -37,8 +42,8 @@ def combined_passwords(text):
         for attempt in permutations(words, r):
             combined = ''.join(attempt)
             if len(combined) >= 6:
-                combines.append(leet_speak_word(combined))
-                combines.append(reverse_word(combined))
+                # combines.append(leet_speak_word(combined))
+                # combines.append(reverse_word(combined))
                 combines.append(combined.upper())
                 combines.append(combined.lower())
     unique_passwords = set(combines)
