@@ -1,5 +1,6 @@
 import random 
 
+# Словарь с символами Leet Speak
 LEET_MAP = {
     'a': ['4', '@', '^'],
     'b': ['8', '|3', 'I3', '!3'],
@@ -30,23 +31,23 @@ LEET_MAP = {
 def leet_speak_word(word, flag=None):
     updated_word = []
     
-    for ind, char in enumerate(word.lower()):
-        replaced = False
-        should_replace = True
-        if flag is True and ind % 2 != 0:
+    for ind, char in enumerate(word.lower()): # Перебор каждого символа по индексу и символу
+        replaced = False # Флаг №1
+        should_replace = True # Флаг №2
+        if flag is True and ind % 2 != 0: # Проверки по флагам
             should_replace = False
         elif flag is False and ind % 2 == 0:
             should_replace = False
         if should_replace:
-            for key, values in LEET_MAP.items():
+            for key, values in LEET_MAP.items(): # Перебор словаря и составление пароля уже Leet Speak
                 if char == key:
                     updated_word.append(random.choice(values))
                     replaced = True
                     break
         if not replaced:
-            updated_word.append(char)
+            updated_word.append(char) # Добавление пароля в список
 
     return ''.join(updated_word)
 
 def reverse_word(word):
-    return word[::-1]
+    return word[::-1] # Переворачиваем пароль
