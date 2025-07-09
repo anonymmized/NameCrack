@@ -1,3 +1,4 @@
+import argparse
 from rich.console import Console
 from itertools import permutations
 from check_pas import pwned_api_check
@@ -7,7 +8,9 @@ from find_names import names_processing
 from find_number import numbers_processing
 from do_leet_speak_reversed import leet_speak_word, reverse_word
 from find_colors_nums import colors_processing, num_processing
-# TODO: Добавить аргументы для обработки функций leet_speak_word и reverse_word
+# TODO: Сохранение паролей в разных форматах
+
+# TODO: Полная реконструкция структуры функции для добавления аргументов
 
 console = Console()
 main_color = '#8A2BE2'
@@ -56,7 +59,7 @@ def combined_passwords(text):
             if len(combined) >= 6:
                 # combines.append(leet_speak_word(combined))
                 # combines.append(reverse_word(combined))
-                combines.append(combined.upper())
+                # combines.append(combined.upper())
                 combines.append(combined.lower())
     unique_passwords = set(combines)
     console.print(f"Всего уникальных паролей: {len(unique_passwords)}", style=f'bold {main_color}')
@@ -66,5 +69,19 @@ def combined_passwords(text):
             console.print(f"Password: {pas} - {cnt}", style=f'bold {main_color}', markup=False)
         except Exception as e:
             console.print(f"Error checking password {pas}: {e}", style='bold red', markup=False)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Генератор паролей на основе текста")
+
+    parser.add_argument('-t', '--text', help='Входной текст для анализа', required=True)
+    parser.add_argument('-lt', '--leet', action='store_true', help='Добавить Leet Speak варианты')
+    parser.add_argument('-rv', '--reverse', action='store_true', help='Добавить перевернутые варианты')
+    parser.add_argument('-up', '--upper', action='store_true', help='Добавить варианты с верхним регистром')
+    parser.add_argument('--min-length', type=int, default=6, help='Определить минимальную длину пароля')
+    parser.add_argument('--max-length', type=int, default=12, help='Определить максимальную длину пароля')
+
+    args = parser.parse_args()
+
 
 combined_passwords(text)
