@@ -8,8 +8,7 @@ from find_names import names_processing
 from find_number import numbers_processing
 from do_leet_speak_reversed import leet_speak_word, reverse_word
 from find_colors_nums import colors_processing, num_processing
-# TODO: Сохранение паролей в разных форматах
-
+# TODO: Перевод комментариев на англ
 # TODO: Полная реконструкция структуры функции для добавления аргументов
 
 console = Console()
@@ -80,6 +79,9 @@ def main():
     parser.add_argument('-up', '--upper', action='store_true', help='Добавить варианты с верхним регистром')
     parser.add_argument('--min-length', type=int, default=6, help='Определить минимальную длину пароля')
     parser.add_argument('--max-length', type=int, default=12, help='Определить максимальную длину пароля')
+    parser.add_argument('--json', action='store_true', help='Добавить формат JSON для сохранения')
+    parser.add_argument('--xml', action='store_true', help='Добавить формат XML для сохранения')
+
 
     args = parser.parse_args()
 
