@@ -9,8 +9,6 @@ from find_number import numbers_processing
 from find_colors_nums import colors_processing, num_processing
 from do_leet_speak import leet_speak_word
 from find_mails_logins import mails_processing, logins_processing 
-# TODO: Перевод комментариев на англ
-# TODO: Полная реконструкция структуры функции для добавления аргументов
 
 console = Console()
 MAIN_COLOR = '#8A2BE2'
