@@ -7,7 +7,7 @@ from find_names import names_processing
 from find_dates import dates_processing
 from find_number import numbers_processing
 from find_colors_nums import colors_processing, num_processing
-from do_leet_speak_reversed import leet_speak_word, reverse_word
+from do_leet_speak import leet_speak_word
 from find_mails_logins import mails_processing, logins_processing 
 # TODO: Перевод комментариев на англ
 # TODO: Полная реконструкция структуры функции для добавления аргументов
@@ -16,7 +16,7 @@ console = Console()
 MAIN_COLOR = '#8A2BE2'
 text = '98234 Alexs'
 
-def combined_passwords(text):
+# def combined_passwords(text):
     # words = text.split()
     # mails = mails_processing(text)
     # names = names_processing(text)
@@ -142,6 +142,20 @@ def main():
 
     args = parser.parse_args()
 
-    
+    if args.leet:
+        console.print("Additional option for leet speak", style=f"{MAIN_COLOR}")
+        console.print("For even characters - True", style=f"{MAIN_COLOR}")
+        console.print("For odd characters - False", style=f"{MAIN_COLOR}")
+        flag_value = console.input("Enter T/F: ")
+        if flag_value == "T".lower():
+            passwords = password_processing(args.text, args.leet, True, args.reverse, args.upper, args.min_length, args.max_length)
+        elif flag_value == "F".lower():
+            passwords = password_processing(args.text, args.leet, False, args.reverse, args.upper, args.min_length, args.max_length)
+        else:
+            passwords = password_processing(args.text, args.leet, None, args.reverse, args.upper, args.min_length, args.max_length)
+    else:
+        passwords = password_processing(args.text, args.leet, True, args.reverse, args.upper, args.min_length, args.max_length)
+    print(passwords)
 
-combined_passwords(text)
+main()
+# combined_passwords(text)
