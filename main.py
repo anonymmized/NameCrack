@@ -1,3 +1,4 @@
+import time
 import argparse
 from rich.console import Console
 from itertools import permutations
@@ -73,6 +74,7 @@ def password_processing(text, leet=False, flag=None, reverse=False, uppr=False, 
 def main():
     art = print_art()
     console.print(art, style='bold purple')
+    time.sleep(2.5)
     parser = argparse.ArgumentParser(description="Password generator based on text")
 
     parser.add_argument('-t', '--text', help='Input text for analysis', required=True)
@@ -106,9 +108,8 @@ def main():
                 counted_passwords[pas] = pwned_api_check(pas)
         except Exception as e:
             console.print(f"Error checking password {pas}: {e}", style='bold red', markup=False)
-    print(counted_passwords)
-
-main()
+    return passwords
 
 if __name__ == "__main__":
-    main()
+    passwords = main()
+    print(passwords)
