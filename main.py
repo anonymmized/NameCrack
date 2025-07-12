@@ -9,11 +9,11 @@ from find_dates import dates_processing
 from find_number import numbers_processing
 from find_colors_nums import colors_processing, num_processing
 from do_leet_speak import leet_speak_word
-from find_mails_logins import mails_processing, logins_processing 
+from find_mails_logins import mails_processing, logins_processing
+from export_data import export_data
 
 console = Console()
 MAIN_COLOR = '#8A2BE2'
-text = '98234 Alexs'
 
 def password_processing(text, leet=False, flag=None, reverse=False, uppr=False, min_length=6, max_length=12):
     words = text.split()
@@ -101,15 +101,37 @@ def main():
             passwords = password_processing(args.text, args.leet, None, args.reverse, args.upper, args.min_length, args.max_length)
     else:
         passwords = password_processing(args.text, args.leet, True, args.reverse, args.upper, args.min_length, args.max_length)
+    # Check passwords against HaveIBeenPwned database
+    console.print("\n🔍 Checking passwords against breach databases...", style=f"bold {MAIN_COLOR}")
     counted_passwords = {}
     for pas in passwords:
         try: 
-            if pwned_api_check(pas) > 0:
-                counted_passwords[pas] = pwned_api_check(pas)
+            breach_count = pwned_api_check(pas)
+            if breach_count > 0:
+                counted_passwords[pas] = breach_count
         except Exception as e:
             console.print(f"Error checking password {pas}: {e}", style='bold red', markup=False)
-    return passwords
+    
+    # Display results
+    console.print(f"\n📊 Results:", style=f"bold {MAIN_COLOR}")
+    console.print(f"Total passwords generated: {len(passwords)}", style=f"bold {MAIN_COLOR}")
+    console.print(f"Compromised passwords found: {len(counted_passwords)}", style=f"bold {MAIN_COLOR}")
+    
+    if counted_passwords:
+        console.print(f"\n⚠️  Compromised passwords:", style='bold red')
+        for password, count in counted_passwords.items():
+            console.print(f"  - {password}: {count} breaches", style='bold red')
+    
+    # Handle exports
+    if args.json:
+        export_data(passwords, counted_passwords, 'json')
+    
+    if args.xml:
+        export_data(passwords, counted_passwords, 'xml')
+    
+    return passwords, counted_passwords
 
 if __name__ == "__main__":
-    passwords = main()
-    print(passwords)
+    passwords, compromised_passwords = main()
+    if not compromised_passwords:
+        console.print("\n✅ No compromised passwords found!", style='bold green')

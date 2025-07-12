@@ -1,0 +1,14 @@
+# Core dependencies
+rich>=13.0.0
+spacy>=3.7.0
+requests>=2.31.0
+colour>=0.1.5
+
+# Optional: For better performance with spaCy
+# Run: python -m spacy download en_core_web_md
+# to download the English language model
+
+# Development dependencies (optional)
+# pytest>=7.0.0
+# flake8>=6.0.0
+# black>=23.0.0
