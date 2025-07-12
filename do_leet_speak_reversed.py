@@ -49,5 +49,3 @@ def leet_speak_word(word, flag=None):
 
     return ''.join(updated_word)
 
-def reverse_word(word):
-    return word[::-1] # Переворачиваем пароль

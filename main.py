@@ -31,46 +31,46 @@ def combined_passwords(text):
     # combines = []
     # for word in words:
     #     console.print(f"->   {word}", style=f'bold {MAIN_COLOR}')
-    if mails:
-        console.print(f"Mails: {mails}", style=f'bold {MAIN_COLOR}')
-        combines += [mail for mail in mails]
-    if logins:
-        console.print(f"Logins: {logins}", style=f'bold {MAIN_COLOR}')
-        combines += [login for login in logins]
-    if dates:
-        console.print(f"Dates: {dates}", style=f'bold {MAIN_COLOR}')
-        combines += [date for date in dates]
+    # if mails:
+    #     console.print(f"Mails: {mails}", style=f'bold {MAIN_COLOR}')
+    #     combines += [mail for mail in mails]
+    # if logins:
+    #     console.print(f"Logins: {logins}", style=f'bold {MAIN_COLOR}')
+    #     combines += [login for login in logins]
+    # if dates:
+    #     console.print(f"Dates: {dates}", style=f'bold {MAIN_COLOR}')
+    #     combines += [date for date in dates]
     # if names:
     #     console.print(f"Names: {names}", style=f'bold {MAIN_COLOR}')
     #     combines += [name for name in names]
-    if numbers:
-        console.print(f"Numbers: {numbers}", style=f'bold {MAIN_COLOR}')
-        combines += [number for number in numbers]
-    if colors:
-        console.print(f"Colors: {colors}", style=f'bold {MAIN_COLOR}')
-        combines += [color for color in colors]
-    if nums:
-        console.print(f"Nums: {nums}", style=f'bold {MAIN_COLOR}')
-        combines += [num for num in nums]
+    # if numbers:
+    #     console.print(f"Numbers: {numbers}", style=f'bold {MAIN_COLOR}')
+    #     combines += [number for number in numbers]
+    # if colors:
+    #     console.print(f"Colors: {colors}", style=f'bold {MAIN_COLOR}')
+    #     combines += [color for color in colors]
+    # if nums:
+    #     console.print(f"Nums: {nums}", style=f'bold {MAIN_COLOR}')
+    #     combines += [num for num in nums]
 
-    for r in range(1, min(4, len(words) + 1)):
-        for attempt in permutations(words, r):
-            combined = ''.join(attempt)
-            if len(combined) >= 6:
-                # combines.append(leet_speak_word(combined))
-                # combines.append(reverse_word(combined))
-                # combines.append(combined.upper())
-                combines.append(combined.lower())
-    unique_passwords = set(combines)
-    console.print(f"Unique passwords: {len(unique_passwords)}", style=f'bold {MAIN_COLOR}')
-    for pas in unique_passwords:
-        try:
-            cnt = pwned_api_check(pas)
-            console.print(f"Password: {pas} - {cnt}", style=f'bold {MAIN_COLOR}', markup=False)
-        except Exception as e:
-            console.print(f"Error checking password {pas}: {e}", style='bold red', markup=False)
+    # for r in range(1, min(4, len(words) + 1)):
+    #     for attempt in permutations(words, r):
+    #         combined = ''.join(attempt)
+    #         if len(combined) >= 6:
+    #             # combines.append(leet_speak_word(combined))
+    #             # combines.append(reverse_word(combined))
+    #             # combines.append(combined.upper())
+    #             combines.append(combined.lower())
+    # unique_passwords = set(combines)
+    # console.print(f"Unique passwords: {len(unique_passwords)}", style=f'bold {MAIN_COLOR}')
+    # for pas in unique_passwords:
+    #     try:
+    #         cnt = pwned_api_check(pas)
+    #         console.print(f"Password: {pas} - {cnt}", style=f'bold {MAIN_COLOR}', markup=False)
+    #     except Exception as e:
+    #         console.print(f"Error checking password {pas}: {e}", style='bold red', markup=False)
 
-def password_processing(text, leet=False, reverse=False, upper=False, min_length=6, max_length=12):
+def password_processing(text, leet=False, flag=None, reverse=False, uppr=False, min_length=6, max_length=12):
     words = text.split()
     names = names_processing(text)
     dates = dates_processing(text)
@@ -91,6 +91,39 @@ def password_processing(text, leet=False, reverse=False, upper=False, min_length
     if dates:
         console.print(f"Dates: {dates}", style=f"bold {MAIN_COLOR}")
         combines += [date for date in dates]
+    if numbers:
+        console.print(f"Numbers: {numbers}", style=f"bold {MAIN_COLOR}")
+        combines += [number for number in numbers]
+    if nums:
+        console.print(f"Nums: {nums}", style=f"bold {MAIN_COLOR}")
+        combines += [num for num in nums]
+    if colors:
+        console.print(f"Colors: {colors}", style=f"bold {MAIN_COLOR}")
+        combines += [color for color in colors]
+    if mails:
+        console.print(f"Mails: {mails}", style=f"bold {MAIN_COLOR}")
+        combines += [mail for mail in mails]
+    if logins:
+        console.print(f"Logins: {logins}", style=f"bold {MAIN_COLOR}")
+        combines += [login for login in logins]
+    for r in range(1, min(4, len(words) + 1)):
+        for attempt in permutations(words, r):
+            combined = ''.join(attempt)
+            if min_length <= len(combined) <= max_length:
+                combines.append(combined.lower())
+                if uppr == True:
+                    combines.append(combined.upper())
+                if leet == True and flag == None:
+                    combines.append(leet_speak_word(combined))
+                elif leet == True and flag == True:
+                    combines.append(leet_speak_word(combined, True))
+                elif leet == True and flag == False:
+                    combines.append(leet_speak_word(combined, False))
+                if reverse:
+                    combines.append(combined[::-1])
+    unique_passwords = set(combines)
+    console.print(f"Unique passwords: {len(unique_passwords)}", style=f"bold {MAIN_COLOR}")
+    return unique_passwords
 
 
 def main():
@@ -109,5 +142,6 @@ def main():
 
     args = parser.parse_args()
 
+    
 
 combined_passwords(text)
