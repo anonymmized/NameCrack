@@ -16,6 +16,24 @@ console = Console()
 MAIN_COLOR = '#8A2BE2'
 
 def password_processing(text, leet=False, flag=None, reverse=False, uppr=False, min_length=6, max_length=12):
+    """Processes the input text to generate potential passwords based on various transformations and checks.
+    
+    Args:
+        text (str): Input text to analyze
+        leet (bool): Whether to apply leet speak transformations
+        flag (bool|None): Flag for selective leet conversion
+        reverse (bool): Whether to add reversed versions of strings
+        uppr (bool): Whether to add uppercase versions of strings
+        min_length (int): Minimum length for passwords
+        max_length (int): Maximum length for passwords
+        
+    Returns:
+        set: Unique generated passwords
+    """
+    if not text or not isinstance(text, str):
+        console.print("❌ Invalid text input. Please provide non-empty text.", style='bold red')
+        return set()
+    
     words = text.split()
     names = names_processing(text)
     dates = dates_processing(text)
@@ -26,10 +44,10 @@ def password_processing(text, leet=False, flag=None, reverse=False, uppr=False, 
     logins = set()
     for word in words:
         logins.update(logins_processing(word))
-    console.print('Go through data:', style=f'bold italic {MAIN_COLOR}')
+    console.print('Iterating through data to generate passwords:', style=f'bold italic {MAIN_COLOR}')
     combines = []
     for word in words:
-        console.print(f"->   {word}", style=f"bold {MAIN_COLOR}")
+        console.print(f"-> {word}", style=f"bold {MAIN_COLOR}")
     if names:
         console.print(f"Names: {names}", style=f"bold {MAIN_COLOR}")
         combines += [name for name in names]
@@ -77,16 +95,24 @@ def main():
     time.sleep(2.5)
     parser = argparse.ArgumentParser(description="Password generator based on text")
 
-    parser.add_argument('-t', '--text', help='Input text for analysis', required=True)
+    parser.add_argument('-t', '--text', type=str, required=True, help='Input text for analysis. Must be a non-empty string.')
     parser.add_argument('-lt', '--leet', action='store_true', help='Add leet speak options')
     parser.add_argument('-rv', '--reverse', action='store_true', help='Add reversed options')
     parser.add_argument('-up', '--upper', action='store_true', help='Add options with the upper registry')
-    parser.add_argument('--min-length', type=int, default=6, help='Determine the minimum password length')
-    parser.add_argument('--max-length', type=int, default=12, help='Determine the maximum password length')
-    parser.add_argument('--json', action='store_true', help='Add JSON format to save')
-    parser.add_argument('--xml', action='store_true', help='Add XML format to save')
+    parser.add_argument('--min-length', type=int, default=6, help='Determine the minimum password length (must be a positive integer)')
+    parser.add_argument('--max-length', type=int, default=12, help='Determine the maximum password length (must be equal or greater than minimum length)')
+    parser.add_argument('--json', action='store_true', help='Export passwords in JSON format')
+    parser.add_argument('--xml', action='store_true', help='Export passwords in XML format')
 
     args = parser.parse_args()
+    
+    # Validate length arguments
+    if args.min_length <= 0:
+        console.print("❌ Minimum password length must be a positive integer.", style='bold red')
+        return
+    if args.max_length < args.min_length:
+        console.print("❌ Maximum password length cannot be less than minimum password length.", style='bold red')
+        return
 
     if args.leet:
         console.print("Additional option for leet speak", style=f"{MAIN_COLOR}")

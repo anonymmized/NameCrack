@@ -689,8 +689,28 @@ def mails_processing(text):
     return mails
 
 def logins_processing(word):
+    """Extract potential login names from a word.
+    
+    Args:
+        word (str): Word to analyze for login patterns
+        
+    Returns:
+        set: Set of potential login names
+    """
+    if not word or not isinstance(word, str):
+        return set()
+        
     logins = set()
-    for login in POPULAR_LOGINS:
-        if login in word.lower() and '!@#$%^&*()_+={}|:;",.?/~' not in word:
-            logins.add(word)
+    special_chars = set('!@#$%^&*()_+={}|:;",.?/~')
+    
+    # Check if word contains any special characters
+    has_special_chars = any(char in special_chars for char in word)
+    
+    if not has_special_chars:
+        word_lower = word.lower()
+        for login in POPULAR_LOGINS:
+            if login in word_lower:
+                logins.add(word)
+                break  # Found a match, no need to check further
+                
     return logins
